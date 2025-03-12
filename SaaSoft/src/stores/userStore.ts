@@ -7,12 +7,7 @@ export const useCounterStore = defineStore('counter', () => {
     const addNewAccount = () => {
         accountArray.value.push({
             'mark': [
-                {
-                    'text':'fgd'
-                },
-                {
-                    'text':'bla'
-                }
+                '',
             ],
             'typeRecord':'local',
             'login': '',

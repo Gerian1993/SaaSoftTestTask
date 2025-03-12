@@ -11,14 +11,14 @@
     <div class="grid gap-3" id="listAccount">
       <div class="flex gap-3" v-for="(item, n) in store.accountArray">
         <div class="flex gap-3">
-          <textarea maxlength="50" :value="Object.values(item.mark).join(';')"></textarea>
+          <textarea maxlength="50" v-model="item.mark"></textarea>
           <select v-model="item.typeRecord">
             <option v-for="option in options" :value="option.value">
               {{ option.text }}
             </option>
           </select>
           <div class="flex">
-            <input @focusout="onsubmit" placeholder="login" type="text" maxlength="100" v-model="item.login" required>
+            <input placeholder="login" type="text" maxlength="100" v-model="item.login" required>
             <input v-show="item.typeRecord === 'local'" placeholder="password" type="password" maxlength="100" v-model="item.password"  required>
           </div>
         </div>
@@ -37,20 +37,8 @@
 import { ref } from 'vue'
 import { useCounterStore } from "../stores/userStore";
 
-
 const store = useCounterStore()
 
-
-const getMarkList = (n) => {
-  const markList = []
-  store.accountArray.forEach((account)=> {
-    markList.push(account[n].mark[text])
-  })
-
-  return markList
-}
-
-const selected = ref('local')
 const options = ref([
   { text: 'Локальный', value: 'local' },
   { text: 'LDAP', value: 'LDAP' },
