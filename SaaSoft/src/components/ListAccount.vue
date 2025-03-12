@@ -8,46 +8,53 @@
         <div class="">Пароль</div>
       </div>
     </div>
-    <div class="grid grid-cols-4 gap-3" id="listAccount">
-      <div class="" v-for="item in store.accountArray">+</div>
-      <textarea maxlength="50"></textarea>
-      <select v-model="selected">
-        <option v-for="option in options" :value="option.value">
-          {{ option.text }}
-        </option>
-      </select>
-      <div class="flex">
-        <input placeholder="login" type="text" maxlength="100">
-        <input v-show="selected === 'local'" placeholder="password" type="password" maxlength="100">
+    <div class="grid gap-3" id="listAccount">
+      <div class="flex gap-3" v-for="(item, n) in store.accountArray">
+        <div class="flex gap-3">
+          <textarea maxlength="50" :value="Object.values(item.mark).join(';')"></textarea>
+          <select v-model="item.typeRecord">
+            <option v-for="option in options" :value="option.value">
+              {{ option.text }}
+            </option>
+          </select>
+          <div class="flex">
+            <input @focusout="onsubmit" placeholder="login" type="text" maxlength="100" v-model="item.login" required>
+            <input v-show="item.typeRecord === 'local'" placeholder="password" type="password" maxlength="100" v-model="item.password"  required>
+          </div>
+        </div>
+        <button
+            class="bg-sky-700 px-4 py-2 text-white hover:bg-sky-800 sm:px-8 sm:py-3 cursor-pointer"
+            @click.prevent="store.deleteAccount(n)"
+        >
+          -
+        </button>
       </div>
     </div>
   </form>
-  <div>Selected: {{ selected }}</div>
 </template>
 
 <script setup>
-import {ref, onMounted, watchEffect} from 'vue'
+import { ref } from 'vue'
 import { useCounterStore } from "../stores/userStore";
 
 
 const store = useCounterStore()
-console.log(store)
+
+
+const getMarkList = (n) => {
+  const markList = []
+  store.accountArray.forEach((account)=> {
+    markList.push(account[n].mark[text])
+  })
+
+  return markList
+}
 
 const selected = ref('local')
 const options = ref([
   { text: 'Локальный', value: 'local' },
   { text: 'LDAP', value: 'LDAP' },
 ])
-
-onMounted(() => {
-  console.log(selected)
-})
-
-watchEffect(()=> {
-  console.log(selected)
-})
-
-
 
 </script>
 
